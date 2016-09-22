@@ -12,7 +12,7 @@ To clone and run this repository you'll need [Git](https://git-scm.com) and [Nod
 # edit the git config file  with $editor
 git config --global --edit
 ```
-Add the following lines to the git configuration.
+And add the following lines to the git configuration.
 Replace USERNAME and PASSWORD with your credentials or leave blank if no authentication is required.
 PROXYNAME is obviously the name of the proxy server, e.g. something like proxy.company-network.net.
 
