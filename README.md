@@ -7,7 +7,7 @@
 
 To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.
 
-**Proxy Setings**
+**Proxy Setings Git**
 ```bash
 #open the git config file
 git config --global --edit
@@ -23,6 +23,12 @@ git config --global --edit
 	postBuffer = 524288000
 ```
 
+**Proxy Setings NPM**
+```bash
+npm config set proxy http://USER_NAME:PASSWORD@PROXY_NAME:80
+npm config set https-proxy https://USER_NAME:PASSWORD@PROXY_NAME:80
+```
+
 ## Installation and Start Zaytuna
 
 From your command line:
@@ -30,7 +36,7 @@ From your command line:
 **How to clone and execute Zaytuna**
 ```bash
 # Clone this repository
-git clone https://scm-01.rsint.net/woerle_l/zaytuna.git
+git clone https://github.com/belakaria/zaytuna.git
 # Go into the repository
 cd zaytuna
 # Install dependencies
@@ -39,15 +45,8 @@ npm install
 npm start
 ```
 
-**How to built an executable from the sources with electron-packager or with electron-builder**
+**How to built an executable from the sources**
 ```bash
-# Once exectured (npm start) you simple call the exectron-packager:
-electron-packager ./ --platform=win32 --arch=x64 --out=dist --ignore=node_modules
-
-Note : This commande build the executable for win32-x64
-You can change the values if you want to build zaytuna for other platform and achitecture
-<platform> Allowed values: linux, win32, darwin, all
-<arch> Allowed values: ia32, x64, all
 
 # Build the executable with [electron-builder](https://www.npmjs.com/package/electron-builder) : it gives .exe for win32-ia32 and win32-x64 with a compressed source code
 npm run pack

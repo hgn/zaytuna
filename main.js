@@ -132,7 +132,7 @@ function createInfoWin(){
     infoWindow.on('closed', function() {
         infoWindow = null;
     });
-    infoWindow.loadURL('file://' + __dirname + '/Info.html');
+    infoWindow.loadURL('file://' + __dirname + '/info.html');
 }
 /*Showing and hiding the About window*/
 function createAboutWin(){
@@ -140,7 +140,7 @@ function createAboutWin(){
     AboutWindow.on('closed', function() {
         AboutWindow = null;
     });
-    AboutWindow.loadURL('file://' + __dirname + '/About.html');
+    AboutWindow.loadURL('file://' + __dirname + '/about.html');
 }
 /*Showing and hiding the help window*/
 function createHelpWin(){
@@ -152,7 +152,7 @@ function createHelpWin(){
     helpWindow.on('closed', function() {
         helpWindow = null;
     });
-    helpWindow.loadURL('file://' + __dirname + '/Shortcuts.html');  
+    helpWindow.loadURL('file://' + __dirname + '/shortcuts.html');  
         }
 
 }
