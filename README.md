@@ -7,7 +7,7 @@
 
 To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.
 
-**Proxy Setings**
+**Proxy Setings Git**
 ```bash
 #open the git config file
 git config --global --edit
@@ -21,6 +21,12 @@ git config --global --edit
 	proxy = http://USER_NAME:PASSWORD@PROXY_NAME:80/
 	sslVerify = false
 	postBuffer = 524288000
+```
+
+**Proxy Setings NPM**
+```bash
+npm config set proxy http://USER_NAME:PASSWORD@PROXY_NAME:80
+npm config set https-proxy https://USER_NAME:PASSWORD@PROXY_NAME:80
 ```
 
 ## Installation and Start Zaytuna
