@@ -45,15 +45,8 @@ npm install
 npm start
 ```
 
-**How to built an executable from the sources with electron-packager or with electron-builder**
+**How to built an executable from the sources**
 ```bash
-# Once exectured (npm start) you simple call the exectron-packager:
-electron-packager ./ --platform=win32 --arch=x64 --out=dist --ignore=node_modules
-
-Note : This commande build the executable for win32-x64
-You can change the values if you want to build zaytuna for other platform and achitecture
-<platform> Allowed values: linux, win32, darwin, all
-<arch> Allowed values: ia32, x64, all
 
 # Build the executable with [electron-builder](https://www.npmjs.com/package/electron-builder) : it gives .exe for win32-ia32 and win32-x64 with a compressed source code
 npm run pack
