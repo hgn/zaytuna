@@ -7,23 +7,30 @@
 
 To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer.
 
-**Proxy Setings Git**
+**Proxy Settings Git**
 ```bash
-#open the git config file
+# edit the git config file  with $editor
 git config --global --edit
-# add the following lines to the file,
-# where USER_NAME and PASSWORD  are replaced by your login and password for the proxy,
-# and PROXY_NAME is the name of the proxy server, e.g. something like proxy.company-network.net
+```
+Add the following lines to the git configuration.
+Replace USERNAME and PASSWORD with your credentials or leave blank if no authentication is required.
+PROXYNAME is obviously the name of the proxy server, e.g. something like proxy.company-network.net.
+
+```bash
 [https]
-    proxy = https://USER_NAME:PASSWORD@PROXY_NAME:80/
-	sslVerify = false
+    proxy = https://USERNAME:PASSWORD@PROXYNAME:80/
+    # not required for this setup, but if your gitlab instance is hosted
+    # has no trusted certificates git will warm about this, disable for now
+    sslVerify = false
 [http]
-	proxy = http://USER_NAME:PASSWORD@PROXY_NAME:80/
-	sslVerify = false
-	postBuffer = 524288000
+    proxy = http://USERNAME:PASSWORD@PROXYNAME:80/
+    postBuffer = 524288000
 ```
 
-**Proxy Setings NPM**
+**Proxy Settings NPM**
+
+If a proxy is available make sure you configure the proxy also for npm:
+
 ```bash
 npm config set proxy http://USER_NAME:PASSWORD@PROXY_NAME:80
 npm config set https-proxy https://USER_NAME:PASSWORD@PROXY_NAME:80
@@ -46,11 +53,12 @@ npm start
 ```
 
 **How to built an executable from the sources**
+
+
+Build the executable with [electron-builder](https://www.npmjs.com/package/electron-builder) : it generates an .exe for win32-ia32 and win32-x64 with a compressed source code. For Linux an AppImage as well as an dynamically linked ELF image is generated.
+
 ```bash
-
-# Build the executable with [electron-builder](https://www.npmjs.com/package/electron-builder) : it gives .exe for win32-ia32 and win32-x64 with a compressed source code
 npm run pack
-
 ```
 
 # Zaytuna
