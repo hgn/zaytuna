@@ -43,7 +43,7 @@ From your command line:
 **How to clone and execute Zaytuna**
 ```bash
 # Clone this repository
-git clone https://github.com/belakaria/zaytuna.git
+git clone https://github.com/hgn/zaytuna.git
 # Go into the repository
 cd zaytuna
 # Install dependencies
