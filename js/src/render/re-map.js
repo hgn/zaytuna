@@ -233,7 +233,7 @@ function updateCoordinates( coordinatesToUpdate ) {
           this.closePopup();
       });
   }
-  map.fitBounds(bounding);
+  // map.fitBounds(bounding);
 }
 
 

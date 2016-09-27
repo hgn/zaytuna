@@ -183,7 +183,7 @@ function unzipFile(event,fileName,startTime, endTime) {
     var stream = fs.createReadStream(dataZipPath) ;
     stream.pipe(unzip.Extract({ path: tempPath }));
     stream.on('end', function() {
-        setTimeout(function() { loadingData(event,fileName,startTime,endTime,0)  }, 10);
+        setTimeout(function() { loadingData(event,fileName,startTime,endTime,0)  }, 5);
                
     });
 }
@@ -235,7 +235,7 @@ function unzipNodeFile(event,fileName,startEventsTime,endEventsTime,interfaceGap
     var stream = fs.createReadStream(dataZipPath) ;
     stream.pipe(unzip.Extract({ path: tempPath }));
     stream.on('end', function() {
-      setTimeout(function() {  loadingEventsData(event,fileName,startEventsTime,endEventsTime,interfaceGap,0)  },5);      
+      setTimeout(function() {  loadingEventsData(event,fileName,startEventsTime,endEventsTime,interfaceGap,0)  },10);      
     });
 }
 //loading events data function
