@@ -247,15 +247,21 @@ function updateTransmissions( transmissionsToUpdate, simuTime ) {
       var category = trans.category ;
       var currentPos = markers[name].getLatLng();
       var subtype = trans.subtype;
-      // var color = initialInfo['traffic-classes'][subtype].color ;
-      // if (category == 1){      
-      //   var cir = L.circleMarker(currentPos, {radius: 20, color: color , stroke : false , fillOpacity:0.3}) ;
-      // }else{
-      //   var cir = L.circleMarker(currentPos, {radius: 15, color: color , stroke : false, fillOpacity:0.3}) ;
-      // }
-      // console.log(name);
-      // cir.addTo(map) ;
-      // dbCirclesLines.push([cir, simuTime + displayTime / 1000]);
+      var type = trans.type ;
+        if (typeof initialInfo['traffic-classes'][subtype] == 'undefined'){
+         var color = "#118C2A" ;
+          console.log("no color defined for", subtype);
+        }else{
+          var color = initialInfo['traffic-classes'][subtype].color ;
+        }
+      if (type == "node"){      
+        var cir = L.circleMarker(currentPos, {radius: 25, color: color , stroke : false , fillOpacity:0.3}) ;
+      }else{
+        var cir = L.circleMarker(currentPos, {radius: 15, color: color , stroke : false, fillOpacity:0.3}) ;
+      }
+      console.log(name);
+      cir.addTo(map) ;
+      dbCirclesLines.push([cir, simuTime + displayTime / 1000]);
   }
 }
 
@@ -267,15 +273,24 @@ function updateReceptions( receptionsToUpdate , simuTime) {
   for (i in receptionsToUpdate[0]){
       var receiverName = receptionsToUpdate[0][i] ;
       var recep = receptionsToUpdate[1][i] ; 
-      var senderName = 'Node' + recep.source ;
       var subtype = recep.subtype;
+      var type = recep.type ;
       var category = recep.category ;
       var receiver = markers[receiverName].getLatLng();
-      var sender = markers[senderName].getLatLng() ; 
-      var color = initialInfo['traffic-classes'][subtype].color ;
-      if (category == 1){      
-        var recepLayer = L.circleMarker(receiver, {radius: 20, color: color , stroke : false, fillOpacity:0.3}) ;
+    
+        if (typeof initialInfo['traffic-classes'][subtype] == 'undefined'){
+         var color = "#CC0631" ;
+         console.log("no color defined for", subtype);
+        }else{
+          var color = initialInfo['traffic-classes'][subtype].color ;
+        }
+
+      if (type == "node"){      
+      var recepLayer = L.circleMarker(receiver, {radius: 40, color: color  , stroke : false, fillOpacity:0.3}) ;
       }else{
+        var color = initialInfo['traffic-classes'][subtype].color ;
+        var senderName = 'Node' + recep.source ;
+        var sender = markers[senderName].getLatLng() ;
         var recepLayer = new L.Polyline([receiver,sender], {color: color ,
                                            weight: 3,
                                            opacity: 0.5,
