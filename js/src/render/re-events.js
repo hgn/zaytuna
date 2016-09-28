@@ -127,7 +127,12 @@ function redrawBars(rightWindowTime,leftWindowTime){
               return  x( new Date(s) ) + margin.left 
             })
           .attr("width", function(d){
-              var barWidth = ( d.duration / 1000000000 * width ) / (100*zoomFactor) ; 
+
+              if (d.class == 'transition') {
+                var barWidth = ((rightWindowTime - time) * width)/(100*zoomFactor);
+              } else {
+                var barWidth = ( d.duration / 1000000000 * width ) / (100*zoomFactor) ; 
+              }
                 return barWidth ; 
           })
           .style("fill",function(d){return d.color})
@@ -135,8 +140,12 @@ function redrawBars(rightWindowTime,leftWindowTime){
           .append("rect")
           .attr("height", 15)
           .attr("width", function(d){
-              var barWidth = (d.duration  / 1000000000 * width)/(100*zoomFactor) ;
-                return barWidth ; 
+              if (d.class == 'transition') {
+                var barWidth = ((rightWindowTime - time) * width)/(100*zoomFactor);
+              } else {
+                var barWidth = ( d.duration / 1000000000 * width ) / (100*zoomFactor) ; 
+              }
+                return barWidth ;  
           })
           .attr("x",function(d){ 
               var t = d.time;
