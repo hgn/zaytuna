@@ -31,21 +31,21 @@ ipcRenderer.on('chunk-ready', function(event,arg1,arg2,arg3) {
    $("#trace_name").html(initialInfo['name']);
    $("#trace_name").css("color", "#a6e22e");
 
-if (arg3 == 0){  
+if (arg3 == 0){
      mapDb = mapDb.slice(lastUpdatePos, mapDb.length);
      lastUpdatePos= 0;
-     mapDb = $.merge(mapDb,arg1); 
+     mapDb = $.merge(mapDb,arg1);
 }else if (arg3 == 1){
   mapDb = arg1 ;
-  lastUpdatePos = 0 ; 
-  updateCoordinates(arg2);    
+  lastUpdatePos = 0 ;
+  updateCoordinates(arg2);
 }else{
   mapDb =$.merge(arg1,mapDb);
   lastUpdatePos= 0;
-  updateCoordinates(arg2); 
+  updateCoordinates(arg2);
   if (mapDb.length > 3000){
-    mapDb = mapDb.slice(0,3000); 
-  }  
+    mapDb = mapDb.slice(0,3000);
+  }
 }
 // console.log(mapDb);
 endTime = parseFloat(mapDb[mapDb.length - 1].time) ;
@@ -56,19 +56,19 @@ ipcRenderer.on('events-data-loaded', function(event, arg1 , arg2) {
   var name = 'Node' + arg1[0].Node ;
   console.log(name);
     if (arg2 == 0){
-          console.log(arg1); 
+          console.log(arg1);
             dataEvents[name] = dataEvents[name].concat(arg1);
     } else if (arg2 == -1) {
             dataEvents[name] = arg1.concat(dataEvents[name]);
     } else if (arg2 == 1){
-    
+
             dataEvents[name] = arg1 ;
     }
     redrawAxis(simuTime);
     redrawBars(rightWindowTime,leftWindowTime);
 
 
-  
+
 });
 
 /***************************************************************************
@@ -91,14 +91,13 @@ holder.ondrop = function (e) {
     var file = e.dataTransfer.files[0];
       $("#trace_name").html("Trace file loading...");
     if (path != ''){
-      cleanAllVars();  
+      cleanAllVars();
       path = file.path ;
       ipcRenderer.send('open-description-file', path);
     }else {
       path = file.path ;
       ipcRenderer.send('open-description-file', path);
     }
-
 };
 
 
@@ -109,6 +108,7 @@ function handleTraceFileInformation(initialInfo) {
     // retrieve global informations about the trace file
     var nodesInfo = initialInfo.nodes;
     var x = 0 ;
+    var draw_it = false;
     for ( x in nodesInfo){
       tabNodes[x] = 'Node' + nodesInfo[x]['node-id'] ;
       if ((typeof nodesInfo[x]['type'] !== 'undefined') && (typeof initialInfo['assets']['control-images'][0]['name']!== 'undefined' )) {
@@ -120,25 +120,43 @@ function handleTraceFileInformation(initialInfo) {
           var app2 = "'><i class='ni-entry-status'></i><div class='ni-entry-img'><img src='data:image/" + TYPE + ";base64," ;
           var app3 = DATA + "' alt="+ NAME + "/></div><div class='ni-entry-main-info'>" + tabNodes[x];
           var app4 = "</div><div class='ni-entry-detail-info'><div class='ni-entry-detail-info-entry'>TX:";
-          var TX = "";
+
+
+          var barname_tx = 'dynamicbartx' +  nodesInfo[x]['node-id'];
+          var barname_rx = 'dynamicbarrx' +  nodesInfo[x]['node-id'];
+          var TX = "&nbsp;<span class='" + barname_tx + "'></span>";
           var app5 = "</div><div class='ni-entry-detail-info-entry'>RX:";
-          var RX = "";
+
+          var RX = "&nbsp;<span class='" + barname_rx + "'></span>"
           var app6 = "</div></div><div class='ni-entry-cmd-section'><div class='fa fa-info-circle'></div><div class='fa fa-crosshairs'></div></div></li>";
-          var str = app1.concat(app2,app3,app4,TX,app5,RX,app6);
-          $("#list").append(str); 
+          draw_it = true;
         }
       }else{
+              var barname_tx = 'dynamicbartx' +  nodesInfo[x]['node-id'];
+              var barname_rx = 'dynamicbarrx' +  nodesInfo[x]['node-id'];
+
           var app1 = "<li class='ni-entry' value='"+ tabNodes[x];
           var app2 = "'><i class='ni-entry-status'></i><div class='ni-entry-img'><img src='images/src/25.jpg' /></div>";
           var app3 = "<div class='ni-entry-main-info'>" + tabNodes[x];
           var app4 = "</div><div class='ni-entry-detail-info'><div class='ni-entry-detail-info-entry'>TX:";
-          var TX = "";
+          var TX = "&nbsp;<span class='" + barname_tx + "'></span>";
           var app5 ="</div><div class='ni-entry-detail-info-entry'>RX:";
-          var RX = "";
+          var RX = "&nbsp;<span class='" + barname_rx + "'></span>"
           var app6 = "</div></div><div class='ni-entry-cmd-section'><div class='fa fa-info-circle'></div><div class='fa fa-crosshairs'></div></div></li>";
-          var str = app1.concat(app2,app3,app4,TX,app5,RX,app6);
-        $("#list").append(str);  
+          draw_it = true;
       }
+
+      if (draw_it) {
+              var barname_tx = 'dynamicbartx' +  nodesInfo[x]['node-id'];
+              var barname_rx = 'dynamicbarrx' +  nodesInfo[x]['node-id'];
+
+              var str = app1.concat(app2,app3,app4,TX,app5,RX,app6);
+              $("#list").append(str);
+
+              $("." + barname_tx).sparkline(nodesInfo[x]['packet-no']['tx'], {type: 'bar', barColor: '#BDBDBD'} );
+              $("." + barname_rx).sparkline(nodesInfo[x]['packet-no']['rx'], {type: 'bar', barColor: '#E0E0E0'} );
+      }
+
     }
     showTime(initialInfo['start-time'],'startclock',null);
     showTime(initialInfo['end-time'],'stopclock',null);
@@ -148,8 +166,8 @@ function handleTraceFileInformation(initialInfo) {
 
     //color and store the checked nodes in chekedNodes
     $("li").click(function () {
-      
-         var name = $(this).attr('value');    
+
+         var name = $(this).attr('value');
          console.log(name);
         console.log(name.substr(4, name.length - 1 ));
          var check = $(this).children('i').attr('class');
@@ -176,7 +194,7 @@ function handleTraceFileInformation(initialInfo) {
           .attr("width", '100%')
           .style("stroke", '#000000')
           .style("stroke-width", 0.5)
-          .style("fill", '#5a5d5f');          
+          .style("fill", '#5a5d5f');
         var subbar = vakken.append('g')
           .attr("class", "subbar");
         var nodeName = vakken.append('rect')
@@ -191,7 +209,7 @@ function handleTraceFileInformation(initialInfo) {
         .attr("letter-spacing", "0.5em")
         .attr("transform", "rotate(90)")
         .style("fill", "#fff")
-        .text(name ); 
+        .text(name );
 
          } else if (check != 'ni-entry-status'){
             $(this).children('i').removeClass("ni-status-activated");
@@ -201,7 +219,7 @@ function handleTraceFileInformation(initialInfo) {
             chekedNodes.splice(n,1);
              $("#"+name).remove();
              delete dataEvents[name] ;
-          for (var i = n; i < chekedNodes.length; i++) { 
+          for (var i = n; i < chekedNodes.length; i++) {
               var y = 35 + i* 75 ;
               $("#"+chekedNodes[i]).attr("transform", "translate("+ 0 +"," + y + ")");
             }
@@ -211,7 +229,7 @@ function handleTraceFileInformation(initialInfo) {
           drawDashLines(75*chekedNodes.length );
          console.log(chekedNodes);
     });
-    
+
 
 };
 
@@ -219,7 +237,7 @@ function handleTraceFileInformation(initialInfo) {
 $('#MapNode').css("height", screen.height * 0.65);
 $('#events').css("height", screen.height * 0.25);
 $('#node').css("height",$('#MapNode').height() - $('#control').height() - $('#info').height());
-//Vertical :Resizing the nodes and map sections 
+//Vertical :Resizing the nodes and map sections
 var max = ($(window).width());
 $('#split-barv').mousedown(function (e) {
     e.preventDefault();
@@ -227,7 +245,7 @@ $('#split-barv').mousedown(function (e) {
         e.preventDefault();
         var x = e.pageX - $('#map-container').offset().left;
         var max = ($(window).width());
-        if ( x < max - 15 && e.pageX < ($(window).width()) && x > 0 ) {  
+        if ( x < max - 15 && e.pageX < ($(window).width()) && x > 0 ) {
           $('#nodes').css("width",max - x);
         }
     })
@@ -239,11 +257,11 @@ $('#split-barh').mousedown(function (e) {
     $(document).mousemove(function (e) {
         e.preventDefault();
         var y = e.pageY - $('#MapNode').offset().top;
-        $('#events').css("height", $(window).height()- $('#MapNode').height()); 
+        $('#events').css("height", $(window).height()- $('#MapNode').height());
         var max = ($(window).height()) - 5;
         var min = $('#control').height() + $('#info').height() ;
-        if (y < max  && e.pageY < ($(window).height()) && y > min) { 
-        $('#events').css("height", $(window).height()- $('#MapNode').height()); 
+        if (y < max  && e.pageY < ($(window).height()) && y > min) {
+        $('#events').css("height", $(window).height()- $('#MapNode').height());
           $('#MapNode').css("height", y);
           $('#map-container').css("height", y);
           $('#map').css("height", y);
@@ -261,7 +279,7 @@ shortcut.add("m",function() {
     $('#map-container').css("height", maxh);
     $('#map').css("height", maxh);
     $('#nodes').css("width",15);
-    $('#events').css("height", $(window).height()-maxh); 
+    $('#events').css("height", $(window).height()-maxh);
 });
 //shortcut to get the events on max size
 shortcut.add("e",function() {
@@ -271,7 +289,7 @@ shortcut.add("e",function() {
     $('#map-container').css("height", minh);
     $('#map').css("height", minh);
     $('#node').css("height",1);
-    $('#events').css("height", maxh); 
+    $('#events').css("height", maxh);
 });
 
 // called to renitialise the application for a new file
@@ -292,21 +310,21 @@ function cleanAllVars(){
   $( '#play-btn' ).css('background-color', '#404040' );
   $( '#pause-btn' ).css('background-color', '#404040' );
   $("#trace_name").css("color", "#ABA9A9");
-  $('#foo').html("");     
+  $('#foo').html("");
   $("a").addClass("disabled");
   clearTimeout(timerInstance);
   for (var j = 0; j < chekedNodes.length; j++) {
         var name = chekedNodes[j];
-        d3.select('#'+name).remove(); 
+        d3.select('#'+name).remove();
   }
   svg.selectAll(".dash").remove();
- //renitialise all the global variables    
+ //renitialise all the global variables
   tabNodes = [];
   mapDb = [];
   chekedNodes = [] ;
   initialInfo = {};
   simuTime = 0.0;
-  timerOut = false ; 
+  timerOut = false ;
   FPS = 60.0;
   accelerationFactor = 1.0;
   lastUpdatePos = -1;
@@ -353,17 +371,17 @@ var template = [
       {
         label: 'Open new trace file',
         accelerator: 'CmdOrCtrl+N',
-        click: function() { 
-          var p = dialog.showOpenDialog() ; 
+        click: function() {
+          var p = dialog.showOpenDialog() ;
           if (p[0]){
           $("#trace_name").html("Trace file loading...");
           if (path != ''){
-            cleanAllVars();  
+            cleanAllVars();
             path = p[0] ;
             ipcRenderer.send('open-description-file', path);
           }else {
-            path = p[0] ;      
-            ipcRenderer.send('open-description-file', path);}          
+            path = p[0] ;
+            ipcRenderer.send('open-description-file', path);}
           }
         }
       },
@@ -437,7 +455,7 @@ var template = [
       },
     ]
   },
- 
+
 ];
 
 var menu = Menu.buildFromTemplate(template);
@@ -447,3 +465,6 @@ $(document).mouseup(function (e) {
     $(document).unbind('mousemove');
 });
 
+$(function() {
+        $('.sparklines').sparkline();
+});

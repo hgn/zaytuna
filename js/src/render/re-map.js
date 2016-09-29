@@ -16,7 +16,7 @@
     var markers = {};
      /*
      * Create Icons
-     */ 
+     */
     //Icon for checked nodes
     var redIcon = L.icon({
         iconUrl: './images/lib/leaflet-img/marker-iconRed.png',
@@ -49,7 +49,7 @@
         L.tileLayer('./images/lib/tiles/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-    
+
     };
 
     function resizeMap(height) {
@@ -57,7 +57,7 @@
     }
 
     function clearMap(){
-        for(i in map._layers){        
+        for(i in map._layers){
             if(map._layers[i]._path != undefined)
             {
                 try{
@@ -69,10 +69,10 @@
             }
         }
     }
-   
+
     function setInitialNodePositions(positions) {
         clearMap();
-        
+
         for (var i = 0; i < positions.length; i++) {
           var name = 'Node' + positions[i]['node-id'];
 
@@ -92,16 +92,16 @@
               markers[name].on('mouseout', function (e) {
                 this.closePopup();
               });
-          
+
           } else {
             markers[name].setLatLng([positions[i]['initial-coordinate'].lat,positions[i]['initial-coordinate'].lon]);
-          }    
+          }
         }
 
         map.fitBounds(bounding);
     };
 
-    //redraw the map 
+    //redraw the map
 
 function redrawMap(simuTime) {
   // here the leaflet map is actually updated.
@@ -175,7 +175,7 @@ function addCoordinate( coordinateObject, coordinatesToUpdate, curPos ) {
    var nodeNum = coordinatesToUpdate[0].indexOf(name);
    if ( nodeNum == -1 ) {
       coordinatesToUpdate[0].push(name);
-      coordinatesToUpdate[1].push(pos);  
+      coordinatesToUpdate[1].push(pos);
    } else {
         coordinatesToUpdate[1][nodeNum] = pos ;
    }
@@ -191,7 +191,7 @@ function addTransmission( transmissionObject, transmissionsToUpdate, curPos ) {
     var nodeNum = transmissionsToUpdate[0].indexOf(name);
     if ( nodeNum == -1 ) {
       transmissionsToUpdate[0].push(name);
-      transmissionsToUpdate[1].push(trans);  
+      transmissionsToUpdate[1].push(trans);
    } else {
         transmissionsToUpdate[1][nodeNum] = trans ;
    }
@@ -207,7 +207,7 @@ function addReception( receptionObject, receptionsToUpdate, curPos ) {
     var nodeNum = receptionsToUpdate[0].indexOf(name);
     if ( nodeNum == -1 ) {
       receptionsToUpdate[0].push(name);
-      receptionsToUpdate[1].push(recep);  
+      receptionsToUpdate[1].push(recep);
    } else {
         receptionsToUpdate[1][nodeNum] = recep ;
    }
@@ -221,7 +221,7 @@ function updateCoordinates( coordinatesToUpdate ) {
   console.log(coordinatesToUpdate);
   for (i in coordinatesToUpdate[0]){
       var name = coordinatesToUpdate[0][i] ;
-      var pos = coordinatesToUpdate[1][i] ; 
+      var pos = coordinatesToUpdate[1][i] ;
       // console.log(name,pos);
       markers[name].setLatLng(pos);
       bounding.push(pos);
@@ -239,7 +239,7 @@ function updateCoordinates( coordinatesToUpdate ) {
 
 //update all transmissions in transmissionsToUpdate
 //NOTE: there should be only one transmission per link or node!!!
-function updateTransmissions( transmissionsToUpdate, simuTime ) { 
+function updateTransmissions( transmissionsToUpdate, simuTime ) {
   var displayTime = 500;
   for (i in transmissionsToUpdate[0]){
       var name = transmissionsToUpdate[0][i] ;
@@ -254,8 +254,9 @@ function updateTransmissions( transmissionsToUpdate, simuTime ) {
         }else{
           var color = initialInfo['traffic-classes'][subtype].color ;
         }
-      if (type == "node"){      
-        var cir = L.circleMarker(currentPos, {radius: 25, color: color , stroke : false , fillOpacity:0.3}) ;
+      if (type == "node"){
+        console.log("node circle large");
+        var cir = L.circleMarker(currentPos, {radius: 15, color: color , stroke : false , fillOpacity:0.3}) ;
       }else{
         var cir = L.circleMarker(currentPos, {radius: 15, color: color , stroke : false, fillOpacity:0.3}) ;
       }
@@ -272,12 +273,12 @@ function updateReceptions( receptionsToUpdate , simuTime) {
   var displayTime = 500;
   for (i in receptionsToUpdate[0]){
       var receiverName = receptionsToUpdate[0][i] ;
-      var recep = receptionsToUpdate[1][i] ; 
+      var recep = receptionsToUpdate[1][i] ;
       var subtype = recep.subtype;
       var type = recep.type ;
       var category = recep.category ;
       var receiver = markers[receiverName].getLatLng();
-    
+
         if (typeof initialInfo['traffic-classes'][subtype] == 'undefined'){
          var color = "#CC0631" ;
          console.log("no color defined for", subtype);
@@ -285,7 +286,7 @@ function updateReceptions( receptionsToUpdate , simuTime) {
           var color = initialInfo['traffic-classes'][subtype].color ;
         }
 
-      if (type == "node"){      
+      if (type == "node"){
       var recepLayer = L.circleMarker(receiver, {radius: 40, color: color  , stroke : false, fillOpacity:0.3}) ;
       }else{
         var color = initialInfo['traffic-classes'][subtype].color ;
@@ -298,7 +299,7 @@ function updateReceptions( receptionsToUpdate , simuTime) {
                                            });
       }
       recepLayer.addTo(map);
-      dbCirclesLines.push([recepLayer, simuTime + displayTime / 1000]) ;     
+      dbCirclesLines.push([recepLayer, simuTime + displayTime / 1000]) ;
   }
 }
 
@@ -330,4 +331,3 @@ function removeOutdatedCirclesAndLines(simuTime) {
         contentHeight = windowHeight;
         resizeMap(contentHeight);
     });
-
