@@ -10,31 +10,31 @@
       <script src="js/lib/shortcut.js" type="text/javascript"></script>
 
         <link rel="stylesheet" href="css/src/main.css">
-        <link rel="stylesheet" href="css/lib/leaflet.css"> 
+        <link rel="stylesheet" href="css/lib/leaflet.css">
         <link rel="stylesheet" href="css/lib/bootstrap.css">
         <link rel="stylesheet" href="css/lib/plugins.css">
   </head>
   <body >
       <div class="MapNode-container" id="MapNode">
-                          
+
           <div class="nodes page-sidebar" id="nodes">
               <div id="split-barv" class="split-barv"></div>
               <div id="info" class="info">
-                <div id='trace_name'>No trace file loaded</div>       
+                <div id='trace_name'>No trace file loaded</div>
                 <div id='info-btn' class='disabled fa fa-info-circle'></div>
               </div>
-              <div class="node sidebar-tabs-con" id="node" >               
+              <div class="node sidebar-tabs-con" id="node" >
                   <ul id="list">
-                  </ul>                         
+                  </ul>
               </div>
               <div id="control" class="control">
                 <span id ="start">Start:<span id='startclock'></span><span id='startmilli'></span></span>
                 <span id ="end">Stop:<span id='stopclock'></span><span id='stopmilli'></span></span>
-                <div id="Simul">                 
-                  <div class="wrapper-clockdate" id='clock'>                      
-                    <span id="clock-large">00:00:00</span><span id='milliseconds' >.0000</span> 
+                <div id="Simul">
+                  <div class="wrapper-clockdate" id='clock'>
+                    <span id="clock-large">00:00:00</span><span id='milliseconds' >.0000</span>
                     <div id="acceleration">x 1</div>
-                  </div>               
+                  </div>
                 </div>
                 <a class="btn btn-option disabled" id="fast-backward-btn"><i class="fa fa-fast-backward"></i></a>
                 <a class="btn btn-option disabled" id="backward-btn"><i class="fa fa-step-backward"></i></a>
@@ -42,28 +42,30 @@
                 <a class="btn btn-option disabled" id = "play-btn" ><i  id = "play-i" class="fa fa-play"></i></a>
                 <a class="btn btn-option disabled" id="forward-btn"><i class="fa fa-step-forward"></i></a>
                 <a class="btn btn-option disabled" id="fast-forward-btn"><i class="fa fa-fast-forward"></i></a>
-                <a class="btn btn-option disabled" id = "stop-btn" ><i class="fa fa-stop"></i></a> 
-                 <a class="btn btn-option disabled" id = "zoomin-btn" ><i class="fa fa-search-plus"></i></a> 
-        <a class="btn btn-option disabled" id = "zoomout-btn" ><i class="fa fa-search-minus"></i></a> 
+                <a class="btn btn-option disabled" id = "stop-btn" ><i class="fa fa-stop"></i></a>
+                 <a class="btn btn-option disabled" id = "zoomin-btn" ><i class="fa fa-search-plus"></i></a>
+        <a class="btn btn-option disabled" id = "zoomout-btn" ><i class="fa fa-search-minus"></i></a>
               </div>
           </div>
-                
+
           <div class="map-container" id="map-container">
               <div id="map" class="map"></div>
           </div>
- 
+
       </div>
-      <div id="split-barh" class="split-barh"></div>            
+      <div id="split-barh" class="split-barh"></div>
       <div class="events" id="events">
 
         <div id='foo'></div>
 
       </div>
-   
+
 
     <script src="js/lib/leaflet-src.js"></script>
     <script src="js/lib/d3.v4.min.js"></script>
-    <script src="js/src/render/re-main.js"></script> 
+    <script src="js/lib/jquery-1.12.1.min.js"></script>
+    <script src="js/lib/jquery.sparkline.min.js"></script>
+    <script src="js/src/render/re-main.js"></script>
     <script src="js/lib/bootstrap.min.js"></script>
     <script src="js/src/render/re-control.js"></script>
     <script src="js/src/render/re-events.js"></script>
