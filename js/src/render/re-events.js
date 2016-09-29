@@ -129,7 +129,7 @@ function redrawBars(rightWindowTime,leftWindowTime){
           .attr("width", function(d){
 
               if (d.class == 'transition') {
-                var barWidth = ((rightWindowTime - time) * width)/(100*zoomFactor);
+                var barWidth = ((rightWindowTime - d.time) * width)/(100*zoomFactor);
               } else {
                 var barWidth = ( d.duration / 1000000000 * width ) / (100*zoomFactor) ; 
               }
@@ -141,7 +141,7 @@ function redrawBars(rightWindowTime,leftWindowTime){
           .attr("height", 15)
           .attr("width", function(d){
               if (d.class == 'transition') {
-                var barWidth = ((rightWindowTime - time) * width)/(100*zoomFactor);
+                var barWidth = ((rightWindowTime - d.time) * width)/(100*zoomFactor);
               } else {
                 var barWidth = ( d.duration / 1000000000 * width ) / (100*zoomFactor) ; 
               }
@@ -171,9 +171,14 @@ function removeOutdatedEvents(){
     for (var j = 0; j < chekedNodes.length; j++) {
       var name = chekedNodes[j];
       for (var q = 0; q < dataEvents[name].length; q++) {
+        if (dataEvents[name][q].class == "transition"){
+// we should fix here the delete of a state transition when a new state transition appear 
+        } else {
           if( (dataEvents[name][q].time + dataEvents[name][q].duration / 1000000000 ) < leftWindowTime){
               dataEvents[name].splice(q,1);
           }
+        }
+          
       }
     }
 }
